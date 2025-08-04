@@ -17,21 +17,21 @@ const categoryColors: Record<string, string> = {
 
 function Description({ opp }: { opp: Opportunity }) {
   return (    
-    <div className="bg-white text-gray-800 min-h-screen p-6 sm:p-12 font-poppins mx-20 ">
+    <div className="bg-white text-gray-800 min-h-screen sm:p-12 font-poppins">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 ">
 
         <div className="lg:col-span-3 space-y-8 shadow border-gray-400 bg-gray-50 p-10">
           <section>
             <h1 className="text-2xl font-bold text-gray-900 mb-2 font-jakarta">company Info.</h1>
-            <Pin />
+            <Info size={16} className="icon" />
             <p className="text-gray-700">{opp.orgName}</p>
-            <Info />
+            <Pin size={16} className="icon"/>
             <p className="text-gray-700">{opp.orgID}</p>
-            <PhoneCall/>
+            <PhoneCall size={16} className="icon"/>
             <p className="text-gray-700">{opp.orgPrimaryPhone}</p>
-            <Mail />
+            <Mail size={16} className="icon" />
             <p className="text-gray-700">{opp.orgEmail}</p>
-            <Globe />
+            <Globe  size={16} className="icon"/>
             <p className="text-gray-700">{opp.orgWebsite}</p>
           </section>
           <section>
@@ -104,9 +104,9 @@ function Description({ opp }: { opp: Opportunity }) {
           <div className="bg-gray-50 shadow border-gray-200 rounded-md p-4">
             <h3 className="text-lg font-bold text-gray-800 mb-2">Categories</h3>
             <div className="flex gap-2 flex-wrap">
-                {opp.categories.map((cat: string, idx: number) => {
-                  const colorClass = categoryColors[cat] || 'bg-gray-100 text-gray-800'; 
-
+              {opp?.categories?.length ? (
+                opp.categories.map((cat: string, idx: number) => {
+                  const colorClass = categoryColors[cat] || 'bg-gray-100 text-gray-800';
                   return (
                     <span
                       key={idx}
@@ -115,21 +115,29 @@ function Description({ opp }: { opp: Opportunity }) {
                       {cat}
                     </span>
                   );
-                })}
-              </div>
+                })
+              ) : (
+                <p className="text-sm text-gray-500">No categories listed.</p>
+              )}
+            </div>
 
           </div>
               <hr/>
           <div className="bg-gray-50 shadow border-gray-200 rounded-md p-4">
             <h3 className="text-lg font-bold text-gray-800 mb-2">Required Skills</h3>
             <ul className="flex flex-wrap gap-2 text-sm text-blue-800">
-              {opp.requiredSkills.map((skill: string, idx: number) => (
-                <li key={idx} className="bg-blue-100 px-2 py-1 rounded list-none">
-                  {skill}
-                </li>
-              ))}
+              {opp?.requiredSkills?.length ? (
+                opp.requiredSkills.map((skill: string, idx: number) => (
+                  <li key={idx} className="bg-blue-100 px-2 py-1 rounded list-none">
+                    {skill}
+                  </li>
+                ))
+              ) : (
+                <li className="text-gray-500">No skills listed.</li>
+              )}
             </ul>
           </div>
+
         </aside>
       </div>
     </div>

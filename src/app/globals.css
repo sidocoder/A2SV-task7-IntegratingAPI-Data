@@ -7,3 +7,15 @@ body {
 .cont {
     background-color: #faf7f7;
 }
+
+.title {
+    @apply text-2xl font-extrabold text-gray-800 mb-2;
+}
+
+.icon {
+    @apply size-9 text-blue-500 font-bold border border-blue-300 rounded-full p-2;
+}
+
+hr {
+    @apply text-gray-200
+}

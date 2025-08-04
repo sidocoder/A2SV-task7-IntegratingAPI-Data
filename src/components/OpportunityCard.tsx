@@ -1,13 +1,16 @@
+'use client';
+import React from 'react';
 import { Opportunity } from "../types/opportunity";
 import Link from "next/link";
 import '../app/globals.css'
+
 
 
 const img = 'job1.png'
 export default function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
   return (
 
-      <Link href={`/opportunity/${opportunity.id}`}>
+      <Link href={`/opportunities/${opportunity.id}`}>
         <div
           className='border border-gray-200 shadow rounded-2xl px-6 py-4 mt-8 grid grid-cols-1 sm:grid-cols-11 gap-4
                       transition duration-300 ease-in-out hover:shadow-lg hover:scale-[1.02] bg-white cursor-pointer'
