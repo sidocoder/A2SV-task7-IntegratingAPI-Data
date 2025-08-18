@@ -1,5 +1,8 @@
+"use client";
 import { Opportunity } from '../types/opportunity';
 import { CalendarDays, Clock3, MapPin, Info, PhoneCall, Mail, Globe, Pin } from 'lucide-react';
+import { useState, useEffect} from 'react';
+import { useParams } from "next/navigation";
 
 const categoryColors: Record<string, string> = {
   IT: 'bg-blue-100 text-blue-500',
@@ -15,24 +18,80 @@ const categoryColors: Record<string, string> = {
 };
 
 
-function Description({ opp }: { opp: Opportunity }) {
+function Description() {
+  const { id } = useParams(); // read id from route like /opportunity/[id]
+  const [opp, setOpp] = useState<Opportunity | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchOpportunity = async () => {
+      try {
+        const res = await fetch(`https://akil-backend.onrender.com/opportunities/${id}`);
+        const data = await res.json();
+
+        if (data.success && data.data) {
+          setOpp(data.data);
+        } else {
+          setError("Failed to load opportunity details.");
+        }
+      } catch (err) {
+        setError("Error fetching opportunity details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOpportunity();
+  }, [id]);
+
+  const renderList = (value?: string) =>
+    value
+      ?.split("\n")
+      .filter((item) => item.trim() !== "")
+      .map((item, index) => <li key={index}>{item}</li>);
+
+  if (loading) {
+    return <p className="text-center text-gray-600">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500">{error}</p>;
+  }
+
+  if (!opp) {
+    return <p className="text-center text-gray-600">No data available</p>;
+  }
+
   return (    
     <div className="bg-white text-gray-800 min-h-screen sm:p-12 font-poppins">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 ">
 
         <div className="lg:col-span-3 space-y-8 shadow border-gray-400 bg-gray-50 p-10">
-          <section>
+          <section className='space-y-2 font-semibold text-gray-600'>
             <h1 className="text-2xl font-bold text-gray-900 mb-2 font-jakarta">company Info.</h1>
-            <Info size={16} className="icon" />
-            <p className="text-gray-700">{opp.orgName}</p>
-            <Pin size={16} className="icon"/>
-            <p className="text-gray-700">{opp.orgID}</p>
-            <PhoneCall size={16} className="icon"/>
-            <p className="text-gray-700">{opp.orgPrimaryPhone}</p>
-            <Mail size={16} className="icon" />
-            <p className="text-gray-700">{opp.orgEmail}</p>
-            <Globe  size={16} className="icon"/>
-            <p className="text-gray-700">{opp.orgWebsite}</p>
+            <div className='flex gap-3 items-center'>
+              <Info size={16} className="icon" />
+              <p className="text-gray-700">{opp.orgName}</p>
+            </div>
+            <div className='flex gap-3 items-center'>
+              <Pin size={16} className="icon"/>
+              <p className="text-gray-700">{opp.orgID}</p>
+            </div>
+            <div className='flex gap-3 items-center'>
+              <PhoneCall size={16} className="icon"/>
+              <p className="text-gray-700">{opp.orgPrimaryPhone}</p>
+            </div>
+            <div className='flex gap-3 items-center'>
+              <Mail size={16} className="icon" />
+              <p className="text-gray-700">{opp.orgEmail}</p>
+            </div>
+            <div className='flex gap-3 items-center'>
+              <Globe  size={16} className="icon"/>
+              <p className="text-gray-700">{opp.orgWebsite}</p>
+            </div>
           </section>
           <section>
             <h1 className="text-2xl font-bold text-gray-900 mb-2 font-jakarta">Description</h1>

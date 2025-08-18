@@ -20,9 +20,9 @@ This is a Next.js application that displays a list of job/volunteer opportunitie
 ![Dashboard Screenshot](./public/2.png)
 
 
-### 📇 Job Card Example
+### 📇 Job description
 
-![Job Card Screenshot](./public/joblist.png)
+![Job Card Screenshot](./public/description.png)
 
 ---
 
